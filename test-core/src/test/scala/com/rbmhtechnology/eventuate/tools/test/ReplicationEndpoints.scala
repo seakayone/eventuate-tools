@@ -64,13 +64,13 @@ object ReplicationEndpoints {
 
     withLevelDbLogConfig { config =>
       withActorSystem(config.withFallback(akkaRemotingConfig)) { implicit system =>
-        val endpoint = replicationEndpoint()
+        val endpoint = replicationEndpoint(logNames)
         f(endpoint)
       }
     }
   }
 
-  private def replicationEndpoint(
+  def replicationEndpoint(
     logNames: Set[String] = Set(DefaultLogName),
     logFactory: String => Props = LeveldbEventLog.props(_),
     connections: Set[ReplicationConnection] = Set.empty,
